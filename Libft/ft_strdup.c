@@ -1,31 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/18 13:49:58 by miaviles          #+#    #+#             */
-/*   Updated: 2024/10/29 15:21:41 by miaviles         ###   ########.fr       */
+/*   Created: 2024/10/02 12:46:44 by miaviles          #+#    #+#             */
+/*   Updated: 2024/10/11 15:31:47 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
+char	*ft_strdup(const char *s)
+{
+	char	*d;
+	size_t	count;
+	size_t	len;
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
+	count = 0;
+	len = ft_strlen(s);
+	d = (char *) malloc(len + 1);
+	if (!d)
+		return (NULL);
+	while (s[count] != '\0')
+	{
+		d[count] = s[count];
+		count++;
+	}
+	d[count] = '\0';
+	return (d);
+}
 
-char	*get_next_line(int fd);
-char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char *s1, char *s2);
-size_t	ft_strlen(const char *s);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strdup(const char *s);
+/*int	main(void)
+{
+	const char	*s = "hello";
 
-#endif
+	char *result = ft_strdup(s);
+	printf("%s", result);
+	free(result);
+	return (0);
+}*/

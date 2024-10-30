@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:00:18 by miaviles          #+#    #+#             */
-/*   Updated: 2024/10/29 15:09:17 by miaviles         ###   ########.fr       */
+/*   Updated: 2024/10/29 15:35:19 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*read_and_append(int fd, char *remainder, char *buffer)
 {
@@ -95,7 +95,7 @@ static char	*update_remainder(char *remainder)
 
 char	*get_next_line(int fd)
 {
-	static char	*remainder;
+	static char	*remainder[MAX_FD];
 	char		*buffer;
 	char		*line ;
 
@@ -104,31 +104,42 @@ char	*get_next_line(int fd)
 	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
-	remainder = read_and_fill_buffer(fd, remainder, buffer);
+	remainder[fd] = read_and_fill_buffer(fd, remainder[fd], buffer);
 	free(buffer);
-	if (!remainder)
+	if (!remainder[fd])
 		return (NULL);
-	line = extract_line(remainder);
-	remainder = update_remainder(remainder);
+	line = extract_line(remainder[fd]);
+	remainder[fd] = update_remainder(remainder[fd]);
 	return (line);
 }
 
-/*int	main(void)
-{
-	int		fd;
-	char	*line;
+/*int main() {
+    int fd1 = open("hola.txt", O_RDONLY);
+    int fd2 = open("otro.txt", O_RDONLY); 
+    
+    if (fd1 < 0 || fd2 < 0) {
+        perror("Error opening files");
+        return 1;
+    }
+	int	i = 5;
+    while (i > 0) 
+	{
+		char *line1 = get_next_line(fd1);
+    	char *line2 = get_next_line(fd2);
+        if (line1) {
+            printf("FD1: %s", line1);
+            free(line1);
+        }
+        if (line2) {
+            printf("FD2: %s", line2);
+            free(line2);
+        }
+		line1 = get_next_line(fd1);
+		line2 = get_next_line(fd2);
+		i--;
+    }
 
-	fd = open("hola.txt", O_RDONLY);
-	if (fd < 0)
-	{
-		perror("Error opening file");
-		return (1);
-	}
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		printf("%s", line);
-		free(line);
-	}
-	close(fd);
-	return (0);
+    close(fd1);
+    close(fd2);
+    return 0;
 }*/

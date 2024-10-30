@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/18 13:49:58 by miaviles          #+#    #+#             */
-/*   Updated: 2024/10/29 15:21:41 by miaviles         ###   ########.fr       */
+/*   Created: 2024/10/29 12:28:59 by miaviles          #+#    #+#             */
+/*   Updated: 2024/10/30 19:34:36 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
-
-# include <stdlib.h>
+# include <stdarg.h>
 # include <unistd.h>
-# include <fcntl.h>
+# include <stdlib.h>
 
-char	*get_next_line(int fd);
-char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char *s1, char *s2);
-size_t	ft_strlen(const char *s);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strdup(const char *s);
+int		ft_printf(const char *format, ...);
+int		print_format(va_list args, char format);
+int		print_string(char *str);
+int		print_char(char c);
+int		print_number(int n, int unsign);
+int		print_pointer(void *ptr);
+int		print_hex(unsigned int n, int uppercase);
+char	*ft_utoa_base(unsigned long long n, int base, int uppercase);
 
 #endif

@@ -1,31 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/18 13:49:58 by miaviles          #+#    #+#             */
-/*   Updated: 2024/10/29 15:21:41 by miaviles         ###   ########.fr       */
+/*   Created: 2024/09/20 13:00:12 by miaviles          #+#    #+#             */
+/*   Updated: 2024/10/11 17:34:11 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
+void	*ft_memset(void *s, int c, size_t n)
+{
+	size_t		count;
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
+	count = 0;
+	while (count < n)
+	{
+		((unsigned char *)s)[count] = (unsigned char)c;
+		count++;
+	}
+	return (s);
+}
+/*int main(void)
+{
+    char str[] = "42 Madrid";
+    char c = 'a';
+    size_t len = 1;
 
-char	*get_next_line(int fd);
-char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char *s1, char *s2);
-size_t	ft_strlen(const char *s);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strdup(const char *s);
-
-#endif
+    printf("Original text: %s\n", str);
+    ft_memset(str, c, len); 
+    printf("Final text: %s\n", str);
+    return 0;
+}*/

@@ -17,7 +17,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-int		ft_printf(const char *format, ...);
+int		ft_printf(const char *str, ...);
 int		print_format(va_list args, char format);
 int		print_string(char *str);
 int		print_char(char c);

@@ -36,7 +36,7 @@ char	*ft_utoa_base(unsigned long long n, int base, int uppercase)
 	str[len] = '\0';
 	while (len--)
 	{
-		str[len] = (n % base) + '0';
+		str[len] = digits[n % base];
 		n /= base;
 	}
 	return (str);

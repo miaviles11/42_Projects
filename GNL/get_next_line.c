@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:00:18 by miaviles          #+#    #+#             */
-/*   Updated: 2024/10/29 15:09:17 by miaviles         ###   ########.fr       */
+/*   Updated: 2024/11/05 13:29:31 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ char	*get_next_line(int fd)
 	int		fd;
 	char	*line;
 
-	fd = open("hola.txt", O_RDONLY);
+	fd = open("otro.txt", O_RDONLY);
 	if (fd < 0)
 	{
 		perror("Error opening file");

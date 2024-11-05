@@ -6,12 +6,11 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:37:02 by miaviles          #+#    #+#             */
-/*   Updated: 2024/10/30 19:43:11 by miaviles         ###   ########.fr       */
+/*   Updated: 2024/11/02 17:12:43 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft.h"
 
 int	print_string(char *str)
 {
@@ -33,50 +32,32 @@ int	print_char(char c)
 	return (1);
 }
 
-int	print_number(int n, int unsign)
+size_t	print_pointer(size_t ptr)
 {
 	int		len;
-	char	*str;
 
-	if (unsign)
-		str = ft_utoa_base((unsigned long long)n, 10, 0);
-	else
-		str = ft_itoa(n);
-	if (!str)
-		return (0);
-	len = print_string(str);
-	free(str);
-	return (len);
-}
-
-int	print_pointer(void *ptr)
-{
-	int		len;
-	char	*hex_str;
-
+	len = 0;
 	if (!ptr)
-	{
-		write(1, "(null)", 6);
-		return (6);
-	}
+		return (print_string("(nil)"));
 	write(1, "0x", 2);
-	hex_str = ft_utoa_base((unsigned long long)ptr, 16, 0);
-	if (!hex_str)
-		return (0);
-	len = print_string(hex_str);
-	free(hex_str);
+	len += print_hex(ptr, 0);
 	return (len + 2);
 }
 
-int	print_hex(unsigned int n, int uppercase)
+size_t	print_hex(size_t n, int uppercase)
 {
 	int		len;
-	char	*hex_str;
 
-	hex_str = ft_utoa_base((unsigned long long)n, 16, uppercase);
-	if (!hex_str)
-		return (0);
-	len = print_string (hex_str);
-	free(hex_str);
+	len = 0;
+	if (n == 0)
+		return (len += print_char('0'));
+	if (n >= 16)
+		len += print_hex(n / 16, uppercase);
+	if (n % 16 <= 9)
+		len += print_char((n % 16 + '0'));
+	else if (uppercase == 0)
+		len += print_char((n % 16 - 10 + 'a'));
+	else if (uppercase)
+		len += print_char((n % 16 - 10 + 'A'));
 	return (len);
 }

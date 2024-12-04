@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:49:58 by miaviles          #+#    #+#             */
-/*   Updated: 2024/10/29 15:35:34 by miaviles         ###   ########.fr       */
+/*   Updated: 2024/11/13 18:43:49 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 #  define BUFFER_SIZE 42
 # endif
 
-# define MAX_FD 1024
+# ifndef MAX_FD
+#  define MAX_FD 1024
+# endif
 
 # include <stdlib.h>
 # include <unistd.h>

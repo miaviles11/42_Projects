@@ -25,13 +25,8 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	count = 0;
 	while (count < size - 1 && src[count] != '\0')
 	{
-<<<<<<< HEAD:Ft_printf/ft_printf_utils.c
-		str[len] = digits[n % base];
-		n /= base;
-=======
 		dst[count] = src[count];
 		count++;
->>>>>>> f1427ca (5/11/2024):printf/Libft/ft_strlcpy.c
 	}
 	dst[count] = '\0';
 	return (len);

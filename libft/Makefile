@@ -39,6 +39,12 @@ SRC=		ft_bzero.c \
 			ft_toupper.c \
 			ft_tolower.c \
 			ft_split.c \
+			ft_error.c \
+			ft_error_clean.c \
+			ft_atol.c \
+			ft_sqrt.c \
+			ft_index.c \
+			ft_bubblesort.c \
             
 SRC_BONUS=  ft_lstnew_bonus.c \
 			ft_lstadd_front_bonus.c \

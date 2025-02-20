@@ -39,14 +39,16 @@ SRC=		ft_bzero.c \
 			ft_toupper.c \
 			ft_tolower.c \
 			ft_split.c \
+			get_next_line.c \
+			ft_printf.c \
+			ft_printf_args.c \
+			ft_putl_fd.c \
+			ft_atol.c \
+			ft_bubblesort.c \
 			ft_error.c \
 			ft_error_clean.c \
-			ft_atol.c \
 			ft_sqrt.c \
-			ft_index.c \
-			ft_bubblesort.c \
-            
-SRC_BONUS=  ft_lstnew_bonus.c \
+            ft_lstnew_bonus.c \
 			ft_lstadd_front_bonus.c \
 			ft_lstsize_bonus.c \
 			ft_lstlast_bonus.c \
@@ -57,7 +59,6 @@ SRC_BONUS=  ft_lstnew_bonus.c \
 			ft_lstmap_bonus.c \
 
 OBJ= $(SRC:.c=.o) 
-OBJ_BONUS= $(SRC_BONUS:.c=.o)
 
 all: $(NAME)
 
@@ -68,7 +69,7 @@ $(NAME): $(OBJ) libft.h
 	$(CC) $(CFLAGS) -o $@ $< -c
 
 clean:
-	rm -f $(OBJ) $(OBJ_BONUS)
+	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME)
@@ -76,7 +77,7 @@ fclean: clean
 re: fclean all
 
 bonus:
-	@make SRC="$(SRC) $(SRC_BONUS)"
+	@make SRC="$(SRC)"
 
 .DEFAULT_GOAL: all
 

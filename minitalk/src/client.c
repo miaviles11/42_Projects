@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:05:19 by miaviles          #+#    #+#             */
-/*   Updated: 2024/12/20 17:23:13 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/02/26 11:29:24 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@ static int	validate_pid(char *pid_str)
 
 static void	send_char(int pid, unsigned char c)
 {
-	int	bit;
+	int		bit;
+	long	time;
 
 	bit = 8;
+	time = 0;
 	while (bit--)
 	{
 		g_ack_received = 0;
@@ -46,8 +48,13 @@ static void	send_char(int pid, unsigned char c)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
-		while (!g_ack_received)
-			;
+		while (!g_ack_received && time < TIMEOUT)
+			time++;
+		if (time == TIMEOUT)
+		{
+			ft_putstr_fd("\x1b[31mERROR, INCORRECT PID!\x1b[0m\n", 2);
+			exit (1);
+		}
 	}
 }
 

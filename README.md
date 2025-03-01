@@ -74,5 +74,5 @@ Para ejecutar cualquiera de los proyectos, sigue estos pasos:
 
 1. **Clona este repositorio**:
    ```bash
-   git clone https://github.com/tu_usuario/42_Projects.git
+      git clone https://github.com/miaviles11/42_Projects.git
 

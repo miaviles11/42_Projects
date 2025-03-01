@@ -44,10 +44,12 @@ SRC=		ft_bzero.c \
 			ft_printf_args.c \
 			ft_putl_fd.c \
 			ft_atol.c \
+			ft_atof.c \
 			ft_bubblesort.c \
 			ft_error.c \
 			ft_error_clean.c \
 			ft_sqrt.c \
+			ft_pow.c \
             ft_lstnew_bonus.c \
 			ft_lstadd_front_bonus.c \
 			ft_lstsize_bonus.c \

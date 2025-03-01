@@ -6,14 +6,9 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 19:45:01 by miaviles          #+#    #+#             */
-/*   Updated: 2025/02/20 18:58:54 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:41:22 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-# include <unistd.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include <stdarg.h>
 
 #ifndef LIBFT_H
 # define LIBFT_H
@@ -21,6 +16,11 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
+
+# include <unistd.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <stdarg.h>
 
 typedef int	t_bool;
 # define TRUE 1
@@ -84,6 +84,8 @@ size_t	print_pointer(size_t ptr);
 size_t	print_hex(size_t n, int uppercase);
 size_t	ft_putl_fd(long n, int fd);
 long	ft_atol(const char *str);
+double	ft_atof(const char *str);
+double	ft_pow(double base, int exp);
 void	ft_bubblesort(int *array, int count);
 void	ft_error_clean(char *str, t_bool e, void *to_free);
 void	ft_error(char *str, t_bool e);

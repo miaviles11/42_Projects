@@ -6,11 +6,12 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 22:18:52 by miaviles          #+#    #+#             */
-/*   Updated: 2024/12/20 15:56:46 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:53:27 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+#include <signal.h>
 
 void	signal_handler(int sig, siginfo_t *info, void *context)
 {

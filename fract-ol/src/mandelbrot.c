@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:10:31 by miaviles          #+#    #+#             */
-/*   Updated: 2025/02/25 19:42:41 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:27:10 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,18 @@
 
 static int	get_color(int iter, int max_iter)
 {
+	double	t;
+	int		red;
+	int		green;
+	int		blue;
+
 	if (iter == max_iter)
 		return (0x000000);
-	return (0x00FF00 * iter / max_iter);
+	t = (double)iter / (double)max_iter;
+	red = (int)(sin(5 * t) * 127 + 128);
+	green = (int)(cos(7 * t) * 127 + 128);
+	blue = (int)(sin(11 * t + 3.14) * 127 + 128);
+	return ((red << 16) | (green << 8) | blue);
 }
 
 static void	put_pixel(t_fractol *fractol, int x, int y, int color)
@@ -31,7 +40,7 @@ static void	put_pixel(t_fractol *fractol, int x, int y, int color)
 
 static int	calc_mandelbrot(double pr, double pi, int max_iter)
 {
-	int	iter;
+	int		iter;
 	double	old_re;
 	double	old_im;
 	double	new_re;

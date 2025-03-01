@@ -3,6 +3,7 @@ NAME = fractol
 SRCS =	src/main.c \
 		src/events.c \
 		src/mandelbrot.c \
+		src/julia.c \
 
 OBJS = $(SRCS:.c=.o)
 

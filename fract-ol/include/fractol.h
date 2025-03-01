@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 12:11:14 by miaviles          #+#    #+#             */
-/*   Updated: 2025/02/25 19:06:23 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:24:44 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
+#include <math.h>
 
-# define WIDTH 800
-# define HEIGHT 600
+# define WIDTH 1920
+# define HEIGHT 1420
 
 typedef struct	s_fractol
 {
@@ -40,11 +41,16 @@ typedef struct	s_fractol
 }	t_fractol;
 
 int			main(int argc, char **argv);
-t_fractol	*init_fractol(void);
+void		render_fractal(t_fractol *fractol);
 
+t_fractol	*init_fractol(void);
 int			close_window(t_fractol *fractol);
 int			key_hook(int keycode, t_fractol *fractol);
+int			mouse_hook(int button, int x, int y, t_fractol *fractol);
 
 void		render_mandelbrot(t_fractol *fractol);
+
+void		render_julia(t_fractol *fractol);
+int			is_valid_param(const char *str);
 
 #endif

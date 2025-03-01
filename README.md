@@ -1,4 +1,4 @@
-# 42 Proyects
+# 42 Proyects - Miguel Ángel Avilés
 
 Bienvenido a mi repositorio de proyectos de la escuela 42. A lo largo de mi formación, he trabajado en diversos proyectos que abarcan desde la programación en C hasta la implementación de algoritmos y sistemas. Aquí podrás encontrar el código y los detalles de cada uno de los proyectos que he completado hasta ahora.
 

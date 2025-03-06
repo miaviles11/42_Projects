@@ -6,22 +6,22 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 11:03:40 by miaviles          #+#    #+#             */
-/*   Updated: 2025/03/01 17:23:37 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/03/05 16:02:22 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static int	get_color(int iter, int max_iter)
+static int	get_color(int iter)
 {
 	double	t;
 	int		red;
 	int		green;
 	int		blue;
 
-	if (iter == max_iter)
+	if (iter == MAX_ITER)
 		return (0x000000);
-	t = (double)iter / (double)max_iter;
+	t = (double)iter / (double)MAX_ITER;
 	red = (int)(sin(5 * t) * 127 + 128);
 	green = (int)(cos(7 * t) * 127 + 128);
 	blue = (int)(sin(11 * t + 3.14) * 127 + 128);
@@ -38,7 +38,7 @@ static void	put_pixel(t_fractol *fractol, int x, int y, int color)
 	*(int *)(fractol->img_data + index) = color;
 }
 
-static int	calc_julia(double pr, double pi, int max_iter, double c_re, double c_im)
+static int	calc_julia(double pr, double pi, double c_re, double c_im)
 {
 	int		iter;
 	double	old_re;
@@ -49,7 +49,7 @@ static int	calc_julia(double pr, double pi, int max_iter, double c_re, double c_
 	iter = 0;
 	old_re = pr;
 	old_im = pi;
-	while ((old_re * old_re + old_im * old_im) <= 4 && iter < max_iter)
+	while ((old_re * old_re + old_im * old_im) <= 4 && iter < MAX_ITER)
 	{
 		new_re = old_re * old_re - old_im * old_im + c_re;
 		new_im = 2 * old_re * old_im + c_im;
@@ -102,8 +102,8 @@ void	render_julia(t_fractol *fractol)
 				+ fractol->offset_x;
 			pi = (y - HEIGHT / 2) / (0.5 * fractol->zoom * HEIGHT)
 				+ fractol->offset_y;
-			iter = calc_julia(pr, pi, fractol->max_iter, fractol->c_re, fractol->c_im);
-			put_pixel(fractol, x, y, get_color(iter, fractol->max_iter));
+			iter = calc_julia(pr, pi, fractol->c_re, fractol->c_im);
+			put_pixel(fractol, x, y, get_color(iter));
 			x++;
 		}
 		y++;

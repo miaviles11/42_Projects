@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:31:19 by miaviles          #+#    #+#             */
-/*   Updated: 2025/03/01 17:29:55 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:59:03 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,15 @@ t_fractol	*init_fractol(void)
 	fractol->zoom = 1.0;
 	fractol->offset_x = 0.0;
 	fractol->offset_y = 0.0;
-	fractol->max_iter = 50;
 	return (fractol);
 }
 
 int	close_window(t_fractol *fractol)
 {
 	mlx_destroy_window(fractol->mlx, fractol->win);
+	mlx_destroy_image(fractol->mlx, fractol->img);
+	mlx_destroy_display(fractol->mlx);
+	free(fractol->mlx);
 	free(fractol);
 	exit(0);
 	return (0);

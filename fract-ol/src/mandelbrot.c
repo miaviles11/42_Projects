@@ -6,22 +6,22 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:10:31 by miaviles          #+#    #+#             */
-/*   Updated: 2025/03/01 17:27:10 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/03/05 16:02:33 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static int	get_color(int iter, int max_iter)
+static int	get_color(int iter)
 {
 	double	t;
 	int		red;
 	int		green;
 	int		blue;
 
-	if (iter == max_iter)
+	if (iter == MAX_ITER)
 		return (0x000000);
-	t = (double)iter / (double)max_iter;
+	t = (double)iter / (double)MAX_ITER;
 	red = (int)(sin(5 * t) * 127 + 128);
 	green = (int)(cos(7 * t) * 127 + 128);
 	blue = (int)(sin(11 * t + 3.14) * 127 + 128);
@@ -38,7 +38,7 @@ static void	put_pixel(t_fractol *fractol, int x, int y, int color)
 	*(int *)(fractol->img_data + index) = color;
 }
 
-static int	calc_mandelbrot(double pr, double pi, int max_iter)
+static int	calc_mandelbrot(double pr, double pi)
 {
 	int		iter;
 	double	old_re;
@@ -49,7 +49,7 @@ static int	calc_mandelbrot(double pr, double pi, int max_iter)
 	iter = 0;
 	old_re = 0;
 	old_im = 0;
-	while ((old_re * old_re + old_im * old_im) <= 4 && iter < max_iter)
+	while ((old_re * old_re + old_im * old_im) <= 4 && iter < MAX_ITER)
 	{
 		new_re = old_re * old_re - old_im * old_im + pr;
 		new_im = 2 * old_re * old_im + pi;
@@ -78,8 +78,8 @@ void	render_mandelbrot(t_fractol *fractol)
 				+ fractol->offset_x;
 			pi = 1.5 * (y - HEIGHT / 2) / (0.5 * fractol->zoom * HEIGHT)
 				+ fractol->offset_y;
-			iter = calc_mandelbrot(pr, pi, fractol->max_iter);
-			put_pixel(fractol, x, y, get_color(iter, fractol->max_iter));
+			iter = calc_mandelbrot(pr, pi);
+			put_pixel(fractol, x, y, get_color(iter));
 			x++;
 		}
 		y++;

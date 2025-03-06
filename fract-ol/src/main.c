@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 12:08:55 by miaviles          #+#    #+#             */
-/*   Updated: 2025/03/01 17:03:28 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/03/05 16:35:35 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,14 @@
 static void	set_julia_values(int ac, char **av, t_fractol *fractol)
 {
 	fractol->fractal_type = 1;
-	if (ac == 4)
+	if (ac == 4 && is_valid_param(av[2]) && is_valid_param(av[3]))
 	{
 		fractol->c_re = ft_atof(av[2]);
 		fractol->c_im = ft_atof(av[3]);
 	}
-	else if (ac == 2)
-	{
-		ft_printf("Using default values for Julia\n");
-		fractol->c_re = -0.7;
-		fractol->c_im = 0.27015;
-	}
 	else
 	{
-		ft_printf("\nInvalid fractal type, try:\n\n");
+		ft_printf("\nInvalid parameters type, try:");
 		ft_printf("\nUsage: ./fractol julia [c_re] [c_im]\n");
 		ft_printf("\nExamples:\n");
 		ft_printf("./fractol julia 0.285 0.01\n");
@@ -41,11 +35,11 @@ static void	set_julia_values(int ac, char **av, t_fractol *fractol)
 	}
 }
 
-static void	set_fractal_type(int ac, char **av, t_fractol *fractol, char *arg)
+static void	set_fractal_type(int ac, char **av, t_fractol *fractol)
 {
-	if (ft_strncmp(arg, "mandelbrot", 10) == 0)
+	if (ft_strncmp(av[1], "mandelbrot", 11) == 0 && ac == 2)
 		fractol->fractal_type = 0;
-	else if (ft_strncmp(arg, "julia", 5) == 0)
+	else if (ft_strncmp(av[1], "julia", 6) == 0)
 	{
 		set_julia_values(ac, av, fractol);
 		if (fractol->c_re < -2 || fractol->c_re > 2
@@ -102,7 +96,7 @@ int	main(int argc, char **argv)
 	fractol = init_fractol();
 	if (!fractol)
 		return (1);
-	set_fractal_type(argc, argv, fractol, argv[1]);
+	set_fractal_type(argc, argv, fractol);
 	init_mlx(fractol);
 	render_fractal(fractol);
 	mlx_key_hook(fractol->win, key_hook, fractol);

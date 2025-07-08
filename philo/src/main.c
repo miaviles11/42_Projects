@@ -6,11 +6,35 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:46:21 by miaviles          #+#    #+#             */
-/*   Updated: 2025/07/01 19:00:06 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:27:28 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+static int	check_philosopher_death(t_rules *rules, int i)
+{
+	unsigned long	last_meal_time;
+	unsigned long	current_time;
+
+	pthread_mutex_lock(&rules->philos[i].meal_lock);
+	last_meal_time = rules->philos[i].last_meal;
+	pthread_mutex_unlock(&rules->philos[i].meal_lock);
+	current_time = get_time();
+	if (current_time - last_meal_time >= rules->time_to_die)
+	{
+		pthread_mutex_lock(&rules->alive_lock);
+		if (rules->all_alive)
+		{
+			rules->all_alive = 0;
+			pthread_mutex_unlock(&rules->alive_lock);
+			print_state_died(&rules->philos[i]);
+			return (1);
+		}
+		pthread_mutex_unlock(&rules->alive_lock);
+	}
+	return (0);
+}
 
 void	*monitor(void *arg)
 {
@@ -18,59 +42,55 @@ void	*monitor(void *arg)
 	int		i;
 
 	rules = (t_rules *)arg;
-	while (rules->all_alive)
+	while (get_simulation_state(rules))
 	{
 		i = 0;
-		while (i < rules->nb_philosophers && rules->all_alive)
+		while (i < rules->nb_philosophers && get_simulation_state(rules))
 		{
-			if (get_time() - rules->philos[i].last_meal > rules->time_to_die)
-			{
-				pthread_mutex_lock(&rules->print_lock);
-				if (rules->all_alive)
-				{
-					rules->all_alive = 0;
-					printf("%ld %d died\n", get_time() - rules->start_time,
-						rules->philos[i].id);
-				}
-				pthread_mutex_unlock(&rules->print_lock);
-				break;
-			}
+			if (check_philosopher_death(rules, i))
+				break ;
 			i++;
 		}
-		usleep(1000);
+		usleep(500);
 	}
 	return (NULL);
+}
+
+static int	check_all_philosophers_ate(t_rules *rules)
+{
+	int	i;
+	int	done;
+
+	done = 0;
+	i = 0;
+	while (i < rules->nb_philosophers)
+	{
+		pthread_mutex_lock(&rules->philos[i].meal_lock);
+		if (rules->philos[i].meals_eaten >= rules->must_eat)
+			done++;
+		pthread_mutex_unlock(&rules->philos[i].meal_lock);
+		i++;
+	}
+	return (done);
 }
 
 void	*monitor_meals(void *arg)
 {
 	t_rules	*rules;
-	int		i;
 	int		done;
 
 	rules = (t_rules *)arg;
 	if (rules->must_eat == -1)
 		return (NULL);
-	while (rules->all_alive)
+	while (get_simulation_state(rules))
 	{
-		done = 0;
-		i = 0;
-		while (i < rules->nb_philosophers)
-		{
-			pthread_mutex_lock(&rules->philos[i].meal_lock);
-			if (rules->philos[i].meals_eaten >= rules->must_eat)
-				done++;
-			pthread_mutex_unlock(&rules->philos[i].meal_lock);
-			i++;
-		}
+		done = check_all_philosophers_ate(rules);
 		if (done == rules->nb_philosophers)
 		{
-			pthread_mutex_lock(&rules->print_lock);
-			rules->all_alive = 0;
-			pthread_mutex_unlock(&rules->print_lock);
+			set_simulation_state(rules, 0);
 			break ;
 		}
-		usleep(1000);
+		usleep(100);
 	}
 	return (NULL);
 }
@@ -81,9 +101,14 @@ int	main(int argc, char **argv)
 	pthread_t	monitor_thread;
 	pthread_t	meal_thread;
 
-	parse_args(argc, argv, &rules);
-	init_simulation(&rules);
-	start_threads(&rules);
+	if (parse_args(argc, argv, &rules))
+		return (1);
+	if (rules.must_eat == 0)
+		return (1);
+	if (init_simulation(&rules))
+		return (1);
+	if (start_threads(&rules))
+		return (1);
 	pthread_create(&monitor_thread, NULL, monitor, &rules);
 	if (rules.must_eat != -1)
 		pthread_create(&meal_thread, NULL, monitor_meals, &rules);
@@ -91,8 +116,6 @@ int	main(int argc, char **argv)
 	if (rules.must_eat != -1)
 		pthread_join(meal_thread, NULL);
 	wait_threads(&rules);
-	if (rules.must_eat != -1 && rules.all_alive == 0)
-		printf("Todos los filósofos han comido lo suficiente 🍝\n");
 	cleanup(&rules);
 	return (0);
 }

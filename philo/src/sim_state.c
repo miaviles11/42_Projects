@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean.c                                            :+:      :+:    :+:   */
+/*   sim_state.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 17:27:17 by miaviles          #+#    #+#             */
-/*   Updated: 2025/07/03 18:05:00 by miaviles         ###   ########.fr       */
+/*   Created: 2025/07/03 18:34:31 by miaviles          #+#    #+#             */
+/*   Updated: 2025/07/03 19:10:45 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void	cleanup(t_rules *rules)
+void	set_simulation_state(t_rules *rules, int value)
 {
-	int	i;
+	pthread_mutex_lock(&rules->alive_lock);
+	rules->all_alive = value;
+	pthread_mutex_unlock(&rules->alive_lock);
+}
 
-	i = 0;
-	while (i < rules->nb_philosophers)
-	{
-		pthread_mutex_destroy(&rules->philos[i].meal_lock);
-		i++;
-	}
-	i = 0;
-	while (i < rules->nb_philosophers)
-	{
-		pthread_mutex_destroy(&rules->forks[i]);
-		i++;
-	}
-	pthread_mutex_destroy(&rules->print_lock);
-	pthread_mutex_destroy(&rules->alive_lock);
-	free(rules->philos);
-	free(rules->forks);
+int	get_simulation_state(t_rules *rules)
+{
+	int	state;
+
+	pthread_mutex_lock(&rules->alive_lock);
+	state = rules->all_alive;
+	pthread_mutex_unlock(&rules->alive_lock);
+	return (state);
 }

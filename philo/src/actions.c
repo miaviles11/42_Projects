@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 18:27:07 by miaviles          #+#    #+#             */
-/*   Updated: 2025/07/01 18:42:08 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/07/03 19:40:55 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,18 @@ void	release_forks(t_philo *philo)
 
 void	take_forks(t_philo *philo)
 {
-	if (philo->id % 2 == 0)
+	if (philo->id % 2 == 1)
 	{
-		pthread_mutex_lock(philo->right_fork);
-		print_state(philo, "has taken a fork");
 		pthread_mutex_lock(philo->left_fork);
+		print_state(philo, "has taken a fork");
+		pthread_mutex_lock(philo->right_fork);
 		print_state(philo, "has taken a fork");
 	}
 	else
 	{
-		pthread_mutex_lock(philo->left_fork);
-		print_state(philo, "has taken a fork");
 		pthread_mutex_lock(philo->right_fork);
+		print_state(philo, "has taken a fork");
+		pthread_mutex_lock(philo->left_fork);
 		print_state(philo, "has taken a fork");
 	}
 }
@@ -51,6 +51,5 @@ void	eat(t_philo *philo)
 	philo->last_meal = get_time();
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->meal_lock);
-	philo->meals_eaten++;
 	ft_usleep(philo->rules->time_to_eat);
 }

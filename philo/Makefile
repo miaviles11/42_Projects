@@ -7,7 +7,15 @@ CFLAGS = -Wall -Werror -Wextra -MMD -MP
 
 # Archivos fuente y objetos
 SRC_DIR = src
-SRC = $(wildcard $(SRC_DIR)/*.c)
+SRC = 	$(SRC_DIR)/actions.c   \
+		$(SRC_DIR)/clean.c     \
+		$(SRC_DIR)/init.c      \
+		$(SRC_DIR)/logs.c      \
+		$(SRC_DIR)/main.c      \
+		$(SRC_DIR)/parse.c     \
+		$(SRC_DIR)/routine.c   \
+		$(SRC_DIR)/sim_state.c \
+		$(SRC_DIR)/utils.c
 OBJ = $(SRC:.c=.o)
 DEP = $(SRC:.c=.d)
 

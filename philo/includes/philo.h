@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:19:27 by miaviles          #+#    #+#             */
-/*   Updated: 2025/07/01 18:56:24 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:25:19 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,39 +50,43 @@ typedef struct s_rules
 }	t_rules;
 
 /*actions.c*/
-void	sleep_and_think(t_philo *philo);
-void	release_forks(t_philo *philo);
-void	take_forks(t_philo *philo);
-void	eat(t_philo *philo);
+void			sleep_and_think(t_philo *philo);
+void			release_forks(t_philo *philo);
+void			take_forks(t_philo *philo);
+void			eat(t_philo *philo);
 
 /*clean.c*/
-void	cleanup(t_rules *rules);
+void			cleanup(t_rules *rules);
 
 /*init.c*/
-void	init_philos(t_rules *rules);
-void	init_simulation(t_rules *rules);
+int				init_philos(t_rules *rules);
+int				init_simulation(t_rules *rules);
 
 /*logs.c*/
-void	print_state(t_philo *philo, char *msg);
+void			print_state(t_philo *philo, char *msg);
+void			print_state_died(t_philo *philo);
 
 /*routine.c*/
-void	*routine(void *arg);
-void	wait_threads(t_rules *rules);
-void	start_threads(t_rules *rules);
+void			*routine(void *arg);
+void			wait_threads(t_rules *rules);
+int				start_threads(t_rules *rules);
 
 /*main.c*/
-void	*monitor(void *arg);
-void	*monitor_meals(void *arg);
-int		main(int argc, char **argv);
+void			*monitor(void *arg);
+void			*monitor_meals(void *arg);
+int				main(int argc, char **argv);
 
 /*parse.c*/
-void	parse_args(int argc, char **argv, t_rules *rules);
+int				parse_args(int argc, char **argv, t_rules *rules);
+
+/*sim_state*/
+void			set_simulation_state(t_rules *rules, int value);
+int				get_simulation_state(t_rules *rules);
 
 /*utils.c*/
-void			ft_error(char *msg, int error);
+int				ft_error(char *msg, int error);
 int				atoi_safe(const char *str);
-void	ft_usleep(unsigned long time_in_ms);
+void			ft_usleep(unsigned long time_in_ms);
 unsigned long	get_time(void);
-int				get_simulation_state(t_rules *rules);
 
 #endif

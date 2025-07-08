@@ -6,13 +6,13 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:46:04 by miaviles          #+#    #+#             */
-/*   Updated: 2025/07/01 18:18:23 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/07/03 17:54:33 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void	init_philos(t_rules *rules)
+int	init_philos(t_rules *rules)
 {
 	int	i;
 	int	res;
@@ -30,12 +30,13 @@ void	init_philos(t_rules *rules)
 		rules->philos[i].last_meal = rules->start_time;
 		res = pthread_mutex_init(&rules->philos[i].meal_lock, NULL);
 		if (res != 0)
-			ft_error("Error initializing meal_lock", 1);
+			return (ft_error("Error initializing meal_lock", 1));
 		i++;
 	}
+	return (0);
 }
 
-static void	init_forks(t_rules *rules)
+static int	init_forks(t_rules *rules)
 {
 	int	i;
 	int	res;
@@ -45,35 +46,41 @@ static void	init_forks(t_rules *rules)
 	{
 		res = pthread_mutex_init(&rules->forks[i++], NULL);
 		if (res != 0)
-			ft_error("Error initializing forks", 1);
+			return (ft_error("Error initializing forks", 1));
 	}
+	return (0);
 }
 
-static void	init_global_mutexes(t_rules *rules)
+static int	init_global_mutexes(t_rules *rules)
 {
 	int	res;
 
 	res = pthread_mutex_init(&rules->print_lock, NULL);
 	if (res != 0)
-		ft_error("Error initializing print_lock", 1);
+		return (ft_error("Error initializing print_lock", 1));
 	res = pthread_mutex_init(&rules->alive_lock, NULL);
 	if (res != 0)
-		ft_error("Error initializing alive_lock", 1);
+		return (ft_error("Error initializing alive_lock", 1));
+	return (0);
 }
 
-void	init_simulation(t_rules *rules)
+int	init_simulation(t_rules *rules)
 {
 	rules->forks = malloc(sizeof(pthread_mutex_t) * rules->nb_philosophers);
 	if (!rules->forks)
-		ft_error("Error allocating forks", 1);
+		return (ft_error("Error allocating forks", 1));
 	rules->philos = malloc(sizeof(t_philo) * rules->nb_philosophers);
 	if (!rules->philos)
 	{
 		free(rules->forks);
-		ft_error("Error allocating philosophers", 1);
+		return (ft_error("Error allocating philosophers", 1));
 	}
-	init_forks(rules);
-	init_global_mutexes(rules);
+	if (init_forks(rules))
+		return (1);
+	if (init_global_mutexes(rules))
+		return (1);
 	rules->all_alive = 1;
-	init_philos(rules);
+	if (init_philos(rules))
+		return (1);
+	return (0);
 }

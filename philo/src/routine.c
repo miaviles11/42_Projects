@@ -6,11 +6,19 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:46:27 by miaviles          #+#    #+#             */
-/*   Updated: 2025/07/08 18:24:25 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:50:59 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+static void	*single_philosopher(t_philo *philo)
+{
+	print_state(philo, "has taken a fork");
+	while (get_simulation_state(philo->rules))
+		usleep(100);
+	return (NULL);
+}
 
 void	*routine(void *arg)
 {
@@ -18,20 +26,21 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
-		usleep(philo->rules->time_to_eat / 2);
+		usleep(1000);
 	if (philo->rules->nb_philosophers == 1)
-	{
-		print_state(philo, "has taken a fork");
-		while (get_simulation_state(philo->rules))
-			usleep(100);
-		return (NULL);
-	}
+		return (single_philosopher(philo));
 	while (get_simulation_state(philo->rules))
 	{
 		take_forks(philo);
+		if (!get_simulation_state(philo->rules))
+		{
+			release_forks(philo);
+			break ;
+		}
 		eat(philo);
 		release_forks(philo);
-		sleep_and_think(philo);
+		sleep_philo(philo);
+		think_philo(philo);
 	}
 	return (NULL);
 }

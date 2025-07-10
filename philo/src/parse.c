@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 17:21:12 by miaviles          #+#    #+#             */
-/*   Updated: 2025/07/08 18:02:51 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:32:32 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ int	parse_args(int argc, char **argv, t_rules *rules)
 		return (ft_error("200 philosophers max", 1));
 	rules->time_to_die = atoi_safe(argv[2]);
 	if (rules->time_to_die <= 0)
-		return (ft_error("time to die must be more than 0", 1));
+		return (ft_error("", 1));
 	rules->time_to_eat = atoi_safe(argv[3]);
 	if (rules->time_to_eat <= 0)
-		return (ft_error("time to eat must be more than 0", 1));
+		return (ft_error("", 1));
 	rules->time_to_sleep = atoi_safe(argv[4]);
 	if (rules->time_to_sleep <= 0)
-		return (ft_error("time to sleep must be more than 0", 1));
+		return (ft_error("", 1));
 	rules->must_eat = -1;
 	if (argc == 6)
 	{

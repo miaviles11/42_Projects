@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:46:04 by miaviles          #+#    #+#             */
-/*   Updated: 2025/07/03 17:54:33 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:42:01 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 int	init_philos(t_rules *rules)
 {
-	int	i;
-	int	res;
+	int		i;
+	int		res;
+	long	start_time;
 
 	i = 0;
-	rules->start_time = get_time();
+	start_time = get_time();
+	rules->start_time = start_time;
 	while (i < rules->nb_philosophers)
 	{
 		rules->philos[i].id = i + 1;

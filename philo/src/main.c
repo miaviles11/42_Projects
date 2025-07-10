@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:46:21 by miaviles          #+#    #+#             */
-/*   Updated: 2025/07/08 18:27:28 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:47:55 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,13 @@ void	*monitor(void *arg)
 		while (i < rules->nb_philosophers && get_simulation_state(rules))
 		{
 			if (check_philosopher_death(rules, i))
-				break ;
+				return (NULL);
 			i++;
 		}
-		usleep(500);
+		if (rules->time_to_die < 100)
+			usleep(100);
+		else
+			usleep(500);
 	}
 	return (NULL);
 }

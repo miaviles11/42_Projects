@@ -6,31 +6,40 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:46:27 by miaviles          #+#    #+#             */
-/*   Updated: 2025/07/08 18:24:25 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/07/12 11:00:02 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+static void	*single_philo_routine(t_philo *philo)
+{
+	print_state(philo, "has taken a fork");
+	ft_usleep(philo->rules->time_to_die + 1);
+	return (NULL);
+}
 
 void	*routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->id % 2 == 0)
-		usleep(philo->rules->time_to_eat / 2);
 	if (philo->rules->nb_philosophers == 1)
-	{
-		print_state(philo, "has taken a fork");
-		while (get_simulation_state(philo->rules))
-			usleep(100);
-		return (NULL);
-	}
+		return (single_philo_routine(philo));
+	if (philo->id % 2 == 0)
+		ft_usleep(philo->rules->time_to_eat / 2);
 	while (get_simulation_state(philo->rules))
 	{
 		take_forks(philo);
+		if (!get_simulation_state(philo->rules))
+		{
+			release_forks(philo);
+			break ;
+		}
 		eat(philo);
 		release_forks(philo);
+		if (!get_simulation_state(philo->rules))
+			break ;
 		sleep_and_think(philo);
 	}
 	return (NULL);

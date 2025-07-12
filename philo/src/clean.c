@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 17:27:17 by miaviles          #+#    #+#             */
-/*   Updated: 2025/07/03 18:05:00 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/07/12 10:51:04 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	cleanup(t_rules *rules)
 	}
 	pthread_mutex_destroy(&rules->print_lock);
 	pthread_mutex_destroy(&rules->alive_lock);
+	pthread_mutex_destroy(&rules->finished_lock);
 	free(rules->philos);
 	free(rules->forks);
 }

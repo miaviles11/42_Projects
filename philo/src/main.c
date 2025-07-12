@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:46:21 by miaviles          #+#    #+#             */
-/*   Updated: 2025/07/08 18:27:28 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/07/12 10:54:04 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,18 @@ static int	check_philosopher_death(t_rules *rules, int i)
 	current_time = get_time();
 	if (current_time - last_meal_time >= rules->time_to_die)
 	{
-		pthread_mutex_lock(&rules->alive_lock);
-		if (rules->all_alive)
+		pthread_mutex_lock(&rules->finished_lock);
+		if (!rules->finished)
 		{
+			rules->finished = 1;
+			pthread_mutex_unlock(&rules->finished_lock);
+			pthread_mutex_lock(&rules->alive_lock);
 			rules->all_alive = 0;
 			pthread_mutex_unlock(&rules->alive_lock);
 			print_state_died(&rules->philos[i]);
 			return (1);
 		}
-		pthread_mutex_unlock(&rules->alive_lock);
+		pthread_mutex_unlock(&rules->finished_lock);
 	}
 	return (0);
 }
@@ -48,10 +51,13 @@ void	*monitor(void *arg)
 		while (i < rules->nb_philosophers && get_simulation_state(rules))
 		{
 			if (check_philosopher_death(rules, i))
-				break ;
+			{
+				set_simulation_state(rules, 0);
+				return (NULL);
+			}
 			i++;
 		}
-		usleep(500);
+		usleep(1000);
 	}
 	return (NULL);
 }
@@ -87,10 +93,17 @@ void	*monitor_meals(void *arg)
 		done = check_all_philosophers_ate(rules);
 		if (done == rules->nb_philosophers)
 		{
-			set_simulation_state(rules, 0);
-			break ;
+			pthread_mutex_lock(&rules->finished_lock);
+			if (!rules->finished)
+			{
+				rules->finished = 1;
+				pthread_mutex_unlock(&rules->finished_lock);
+				set_simulation_state(rules, 0);
+				break ;
+			}
+			pthread_mutex_unlock(&rules->finished_lock);
 		}
-		usleep(100);
+		usleep(1000);
 	}
 	return (NULL);
 }

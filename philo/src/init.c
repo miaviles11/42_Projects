@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:46:04 by miaviles          #+#    #+#             */
-/*   Updated: 2025/07/03 17:54:33 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/07/12 11:04:09 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ static int	init_global_mutexes(t_rules *rules)
 	res = pthread_mutex_init(&rules->alive_lock, NULL);
 	if (res != 0)
 		return (ft_error("Error initializing alive_lock", 1));
+	res = pthread_mutex_init(&rules->finished_lock, NULL);
+	if (res != 0)
+		return (ft_error("Error initializing finished_lock", 1));
 	return (0);
 }
 
@@ -80,6 +83,7 @@ int	init_simulation(t_rules *rules)
 	if (init_global_mutexes(rules))
 		return (1);
 	rules->all_alive = 1;
+	rules->finished = 0;
 	if (init_philos(rules))
 		return (1);
 	return (0);

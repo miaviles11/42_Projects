@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miguel Ángel Avilés - 42 Madrid</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            text-align: center;
+        }
+        h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .subtitle { font-size: 1.3em; margin-bottom: 30px; opacity: 0.9; }
+        .skills {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .skill {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        .skill:hover { transform: translateY(-5px); }
+        .links { margin-top: 30px; }
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 30px;
+            background: rgba(255,255,255,0.3);
+            border: 2px solid white;
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: white;
+            color: #667eea;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Miguel Ángel Avilés</h1>
+        <p class="subtitle">42 Madrid Student | System Administrator</p>
+        
+        <div class="skills">
+            <div class="skill">🐳 Docker</div>
+            <div class="skill">🔧 NGINX</div>
+            <div class="skill">🗄️ MariaDB</div>
+            <div class="skill">📝 WordPress</div>
+            <div class="skill">🐧 Linux</div>
+            <div class="skill">💻 C/C++</div>
+        </div>
+        
+        <div class="links">
+            <a href="https://miaviles.42.fr/" class="btn">📖 Visit My Blog</a>
+            <a href="https://miaviles.42.fr/adminer/" class="btn">🗃️ Database Admin</a>
+        </div>
+        
+        <p style="margin-top: 30px; opacity: 0.7; font-size: 0.9em;">
+            🚀 Inception Project - Docker Infrastructure
+        </p>
+    </div>
+</body>
+</html>

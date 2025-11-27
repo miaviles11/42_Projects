@@ -1,0 +1,36 @@
+# ============================================================================
+#                   CONFIGURACIÓN MARIADB - INCEPTION
+# ============================================================================
+
+[mysqld]
+
+# Usuario del sistema que ejecuta el servicio
+user                    = mysql
+
+# Archivos de control del proceso
+pid-file                = /run/mysqld/mysqld.pid
+socket                  = /run/mysqld/mysqld.sock
+
+# Puerto de escucha (default MySQL/MariaDB)
+port                    = 3306
+
+# Directorios del sistema
+basedir                 = /usr
+datadir                 = /var/lib/mysql
+tmpdir                  = /tmp
+lc-messages-dir         = /usr/share/mysql
+
+# IMPORTANTE: Permite conexiones desde cualquier IP (necesario para Docker)
+bind-address            = 0.0.0.0
+
+# Caché de consultas (mejora rendimiento)
+query_cache_size        = 16M
+
+# Logs y mantenimiento
+log_error               = /var/log/mysql/error.log
+expire_logs_days        = 10
+
+# Codificación UTF-8 (soporte completo de caracteres)
+character-set-server    = utf8mb4
+collation-server        = utf8mb4_general_ci
+

@@ -1,0 +1,284 @@
+# ============================================================================
+#                    DOCKER COMPOSE - PROYECTO INCEPTION
+# ============================================================================
+# Este archivo orquesta servicios containerizados que trabajan juntos:
+# - NGINX:       Servidor web (proxy reverso con SSL/TLS)
+# - WordPress:   Sistema de gestión de contenido (CMS)
+# - MariaDB:     Sistema de gestión de base de datos (SGBD)
+# - Adminer:     Herramienta web para gestión de bases de datos (BONUS)
+# - Static-site: Sitio web estático adicional (BONUS)
+# - Portainer:   Panel de gestión de Docker (BONUS)
+#
+# Arquitectura: NGINX -> WordPress -> MariaDB
+# ============================================================================
+
+version: '3.8'
+
+# ============================================================================
+#                              SERVICIOS
+# ============================================================================
+
+services:
+
+  # --------------------------------------------------------------------------
+  # MARIADB - Base de Datos
+  # --------------------------------------------------------------------------
+  # Sistema de gestión de base de datos relacional compatible con MySQL.
+  # Almacena todos los datos de WordPress (posts, usuarios, configuración).
+  # --------------------------------------------------------------------------
+  mariadb:
+    container_name: mariadb
+    
+    # Construcción de la imagen desde Dockerfile personalizado
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    
+    # Nombre de la imagen resultante
+    image: mariadb
+    
+    # Variables de entorno cargadas desde archivo .env
+    # (credenciales de BD, nombres de usuario, etc.)
+    env_file:
+      - .env
+    
+    # Volúmenes para persistencia de datos
+    volumes:
+      # Datos de la base de datos (tablas, índices, etc.)
+      - mariadb_data:/var/lib/mysql
+      # Logs del servidor MariaDB
+      - /home/${USER}/data/mysql_log:/var/log/mysql
+    
+    # Red privada para comunicación entre contenedores
+    networks:
+      - inception
+    
+    # Política de reinicio: se reinicia automáticamente excepto si se detiene manualmente
+    restart: unless-stopped
+
+  # --------------------------------------------------------------------------
+  # WORDPRESS - Aplicación Web (CMS)
+  # --------------------------------------------------------------------------
+  # Sistema de gestión de contenido que sirve el sitio web dinámico.
+  # Se conecta a MariaDB para almacenar y recuperar contenido.
+  # Utiliza PHP-FPM para procesar código PHP.
+  # --------------------------------------------------------------------------
+  wordpress:
+    container_name: wordpress
+    
+    # Construcción de la imagen desde Dockerfile personalizado
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    
+    # Nombre de la imagen resultante
+    image: wordpress
+    
+    # Variables de entorno (configuración de WordPress y conexión a BD)
+    env_file:
+      - .env
+    
+    # Volúmenes para persistencia de datos
+    volumes:
+      # Archivos de WordPress (core, plugins, themes, uploads)
+      - wordpress_data:/var/www/html
+    
+    # Red privada para comunicación con otros servicios
+    networks:
+      - inception
+    
+    # Dependencias: WordPress necesita que MariaDB esté disponible
+    depends_on:
+      - mariadb
+    
+    # Política de reinicio automático
+    restart: unless-stopped
+
+  # --------------------------------------------------------------------------
+  # NGINX - Servidor Web (Proxy Reverso)
+  # --------------------------------------------------------------------------
+  # Servidor web que actúa como punto de entrada a la aplicación.
+  # - Maneja conexiones HTTPS (TLS/SSL) en el puerto 443
+  # - Funciona como proxy reverso hacia PHP-FPM (WordPress)
+  # - Sirve archivos estáticos (CSS, JS, imágenes)
+  # --------------------------------------------------------------------------
+  nginx:
+    container_name: nginx
+    
+    # Construcción de la imagen desde Dockerfile personalizado
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    
+    # Nombre de la imagen resultante
+    image: nginx
+    
+    # Variables de entorno (configuración del servidor)
+    env_file:
+      - .env
+    
+    # Volúmenes compartidos
+    volumes:
+      # Acceso a archivos de WordPress para servir contenido estático
+      - wordpress_data:/var/www/html
+      # Acceso a archivos de Adminer para servirlos a través de NGINX
+      - adminer_data:/var/www/html/adminer
+    
+    # Red privada para comunicación con WordPress
+    networks:
+      - inception
+    
+    # Dependencias: NGINX necesita que WordPress esté disponible
+    depends_on:
+      - wordpress
+    
+    # Mapeo de puertos: expone el puerto 443 (HTTPS) al host
+    # Solo este servicio tiene puertos expuestos (punto de entrada único)
+    ports:
+      - "443:443"
+    
+    # Política de reinicio automático
+    restart: unless-stopped
+
+  # --------------------------------------------------------------------------
+  # ADMINER - Gestor de Base de Datos Web (BONUS)
+  # --------------------------------------------------------------------------
+  # Herramienta web ligera para administrar bases de datos (alternativa a phpMyAdmin).
+  # Permite visualizar y manipular tablas, ejecutar consultas SQL, etc.
+  # Accesible desde el navegador a través de NGINX.
+  # --------------------------------------------------------------------------
+  adminer:
+    container_name: adminer
+    
+    # Construcción de la imagen desde Dockerfile personalizado
+    build:
+      context: ./requirements/bonus/adminer
+      dockerfile: Dockerfile
+    
+    # Nombre de la imagen resultante
+    image: adminer
+    
+    # Volúmenes para archivos de Adminer
+    volumes:
+      - adminer_data:/var/www/html/adminer
+    
+    # Red privada para comunicación con MariaDB
+    networks:
+      - inception
+    
+    # Dependencias: Adminer necesita conectarse a MariaDB
+    depends_on:
+      - mariadb
+    
+    # Política de reinicio automático
+    restart: unless-stopped
+
+  # --------------------------------------------------------------------------
+  # STATIC-SITE - Sitio Web Estático (BONUS)
+  # --------------------------------------------------------------------------
+  # Servidor adicional que sirve contenido HTML/CSS/JS estático.
+  # No requiere base de datos ni procesamiento dinámico.
+  # Puede ser una página de presentación, portfolio, etc.
+  # --------------------------------------------------------------------------
+  static-site:
+    container_name: static-site
+    
+    # Construcción de la imagen desde Dockerfile personalizado
+    build:
+      context: ./requirements/bonus/static-site
+      dockerfile: Dockerfile
+    
+    # Nombre de la imagen resultante
+    image: static-site
+    
+    # Red privada (accesible vía NGINX)
+    networks:
+      - inception
+    
+    # Política de reinicio automático
+    restart: unless-stopped
+
+  # --------------------------------------------------------------------------
+  # PORTAINER - Panel de Gestión Docker (BONUS)
+  # --------------------------------------------------------------------------
+  # Interfaz web para administrar contenedores, imágenes, volúmenes y redes.
+  # Proporciona visualización gráfica del estado de Docker.
+  # Accesible en https://localhost:9443
+  # --------------------------------------------------------------------------
+  portainer:
+    container_name: portainer
+    
+    # Imagen oficial de Portainer Community Edition
+    image: portainer/portainer-ce:2.11.1
+    
+    # Volúmenes necesarios
+    volumes:
+      # Socket de Docker para gestionar contenedores del host
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Datos persistentes de configuración de Portainer
+      - portainer_data:/data
+    
+    # Red privada
+    networks:
+      - inception
+    
+    # Puerto 9443: acceso web HTTPS a Portainer
+    ports:
+      - "9443:9443"
+    
+    # Política de reinicio automático
+    restart: unless-stopped
+
+# ============================================================================
+#                              VOLÚMENES
+# ============================================================================
+# Volúmenes persistentes que almacenan datos fuera de los contenedores.
+# Tipo: bind mount - vincula directorios del host con el contenedor.
+# Ventajas: Los datos persisten aunque se eliminen los contenedores.
+# ============================================================================
+
+volumes:
+
+  # Volumen para archivos de WordPress
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none                              # Bind mount (no volumen gestionado)
+      o: bind                                 # Opción de bind
+      device: /home/${USER}/data/wordpress    # Ruta en el sistema host
+
+  # Volumen para base de datos MariaDB
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none                              # Bind mount (no volumen gestionado)
+      o: bind                                 # Opción de bind
+      device: /home/${USER}/data/mariadb      # Ruta en el sistema host
+
+  # Volumen para archivos de Adminer (gestor de BD)
+  adminer_data:
+    driver: local
+    driver_opts:
+      type: none                              # Bind mount
+      o: bind                                 # Opción de bind
+      device: /home/${USER}/data/adminer      # Ruta en el sistema host
+
+  # Volumen para datos de Portainer (configuración y usuarios)
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: none                              # Bind mount
+      o: bind                                 # Opción de bind
+      device: /home/${USER}/data/portainer    # Ruta en el sistema host
+
+# ============================================================================
+#                              REDES
+# ============================================================================
+# Red privada tipo bridge que permite la comunicación entre contenedores.
+# Los servicios pueden comunicarse usando sus nombres como hostnames.
+# Ejemplo: WordPress se conecta a MariaDB usando "mariadb:3306"
+# ============================================================================
+
+networks:
+  inception:
+    driver: bridge

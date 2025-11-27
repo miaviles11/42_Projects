@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:42:27 by miaviles          #+#    #+#             */
-/*   Updated: 2025/09/18 17:47:20 by miaviles         ###   ########.fr       */
+/*   Updated: 2025/10/13 16:15:29 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ Fixed Fixed::operator++(int)
 {
 	Fixed temp(*this);
 	this->_rawBits += (1 << _fractionalBits);
+	this->_fractionalBits += (1 << _rawBits);
 	return temp;
 }
 

@@ -14,6 +14,11 @@
 #define SCALARCONVERTER_HPP
 
 #include <string>
+#include <iostream>
+#include <cstdlib>
+#include <cctype>
+#include <cmath>
+#include <limits>
 
 class ScalarConverter {
 	private:
@@ -32,11 +37,11 @@ class ScalarConverter {
 		};
 
 		static LiteralType  detectType(const std::string& str);
-        static void         convertFromChar(char c);
-        static void         convertFromInt(int i);
-        static void         convertFromFloat(float f);
-        static void         convertFromDouble(double d);
-        static void         convertFromSpecial(const std::string& str);
+		static void         convertFromChar(char c);
+		static void         convertFromInt(int i);
+		static void         convertFromFloat(float f);
+		static void         convertFromDouble(double d);
+		static void         convertFromSpecial(const std::string& str);
 
 	public:
 		static void convert(const std::string& literal);

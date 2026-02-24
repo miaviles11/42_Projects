@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 16:58:11 by miaviles          #+#    #+#             */
-/*   Updated: 2026/02/17 16:58:11 by miaviles         ###   ########.fr       */
+/*   Updated: 2026/02/24 13:53:20 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <cctype>
 #include <cmath>
 #include <limits>
+#include <iomanip>
 
 class ScalarConverter {
 	private:

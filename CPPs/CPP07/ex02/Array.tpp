@@ -58,7 +58,7 @@ Array<T>::~Array()
 template <typename T>
 T &Array<T>::operator[](unsigned int index)
 {
-	if (index >= size())
+	if (index >= this->size())
 		throw std::out_of_range("Index out of bounds");
 	return (_array[index]);
 }
@@ -66,7 +66,7 @@ T &Array<T>::operator[](unsigned int index)
 template <typename T>
 const T &Array<T>::operator[](unsigned int index) const
 {
-	if (index >= size())
+	if (index >= this->size())
 		throw std::out_of_range("Index out of bounds");
 	return (_array[index]);
 }

@@ -12,8 +12,8 @@ YELLOW := \033[33m
 CYAN := \033[36m
 RESET := \033[0m
 
-# Fuentes
-SRC := 	main.cpp \
+# Fuentes (SOLO .cpp)
+SRC := main.cpp
 
 # Objetos
 OBJ := $(SRC:.cpp=.o)

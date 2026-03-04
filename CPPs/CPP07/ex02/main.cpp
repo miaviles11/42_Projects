@@ -6,7 +6,7 @@
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 01:58:45 by miaviles          #+#    #+#             */
-/*   Updated: 2026/02/25 01:58:45 by miaviles         ###   ########.fr       */
+/*   Updated: 2026/03/03 14:13:16 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,6 @@ int main()
 
 	printArray(assigned, "assigned");
 	printArray(numbers, "original numbers (should be unchanged)");
-
-
-	std::cout << "\n========== SELF ASSIGNMENT ==========" << std::endl;
-	assigned = assigned;
-	printArray(assigned, "assigned after self-assignment");
-
 
 	std::cout << "\n========== CONST ACCESS ==========" << std::endl;
 	const Array<int> constArray(numbers);

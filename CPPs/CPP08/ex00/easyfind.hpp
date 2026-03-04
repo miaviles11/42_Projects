@@ -1,36 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iter.hpp                                           :+:      :+:    :+:   */
+/*   easyfind.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miaviles <miaviles@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/25 01:20:52 by miaviles          #+#    #+#             */
-/*   Updated: 2026/03/03 13:57:08 by miaviles         ###   ########.fr       */
+/*   Created: 2026/03/04 17:14:06 by miaviles          #+#    #+#             */
+/*   Updated: 2026/03/04 18:38:02 by miaviles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ITER_HPP
-#define ITER_HPP
+#ifndef EASYFIND_HPP
+#define EASYFIND_HPP
 
-#include <cstddef>
+#include <algorithm>
+#include <stdexcept>
 
-template <typename T, typename F>
-void iter(T *array, const size_t len, F func)
+template <typename T>
+typename T::iterator easyfind(T &container, int value)
 {
-	if (!array)
-		return;
-	for (size_t i = 0; i < len; i++)
-		func(array[i]);
-}
-
-template <typename T, typename F>
-void iter(const T *array, const size_t len, F func)
-{
-	if (!array)
-		return;
-	for (size_t i = 0; i < len; i++)
-		func(array[i]);
+	typename T::iterator it = std::find(container.begin(), container.end(), value);
+	if (it == container.end())
+        throw std::runtime_error("Value not found");
+    return (it);
 }
 
 #endif

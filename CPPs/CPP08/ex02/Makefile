@@ -1,5 +1,5 @@
 # Nombre del ejecutable
-NAME := span
+NAME := stack
 
 # Compilador y flags
 CXX := c++
@@ -14,7 +14,6 @@ RESET := \033[0m
 
 # Fuentes
 SRC := 	main.cpp \
-		span.cpp \
 
 # Objetos
 OBJ := $(SRC:.cpp=.o)

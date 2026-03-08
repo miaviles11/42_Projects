@@ -1,5 +1,5 @@
 # Nombre del ejecutable
-NAME := stack
+NAME := exchange
 
 # Compilador y flags
 CXX := c++

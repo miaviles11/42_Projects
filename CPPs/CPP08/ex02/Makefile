@@ -14,7 +14,7 @@ RESET := \033[0m
 
 # Fuentes
 SRC := 	main.cpp \
-		Span.cpp \
+		span.cpp \
 
 # Objetos
 OBJ := $(SRC:.cpp=.o)

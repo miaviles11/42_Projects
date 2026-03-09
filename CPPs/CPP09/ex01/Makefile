@@ -1,5 +1,5 @@
 # Nombre del ejecutable
-NAME := stack
+NAME := rpn
 
 # Compilador y flags
 CXX := c++
@@ -14,6 +14,7 @@ RESET := \033[0m
 
 # Fuentes
 SRC := 	main.cpp \
+		RPN.cpp \
 
 # Objetos
 OBJ := $(SRC:.cpp=.o)

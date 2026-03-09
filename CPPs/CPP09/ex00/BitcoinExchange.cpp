@@ -109,7 +109,7 @@ void BitcoinExchange::processInput(const std::string &inputFile) const
 
 		if (!isValidDate(date))
 		{
-			std::cerr << "Error: bad date input => " << date << std::endl;
+			std::cerr << "Error: bad input => " << date << std::endl;
 			continue;
 		}
 

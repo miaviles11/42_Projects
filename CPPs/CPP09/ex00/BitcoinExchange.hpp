@@ -15,6 +15,7 @@
 
 #include <string>
 #include <map>
+#include <iostream>
 
 class BitcoinExchange
 {

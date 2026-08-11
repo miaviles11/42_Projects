@@ -14,6 +14,7 @@
 
 int main(int argc, char **argv)
 {
+	// The program expects exactly one argument: the input file to evaluate.
 	if (argc != 2)
 	{
 		std::cerr << "Error: could not open file." << std::endl;
@@ -21,11 +22,13 @@ int main(int argc, char **argv)
 	}
 	try
 	{
+		// Load the price database, then process the user's input file.
 		BitcoinExchange btc("data.csv");
 		btc.processInput(argv[1]);
 	}
 	catch (const std::exception &e)
 	{
+		// Thrown if the database file cannot be opened.
 		std::cerr << e.what() << std::endl;
 		return (1);
 	}

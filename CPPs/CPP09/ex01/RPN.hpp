@@ -22,15 +22,15 @@
 class RPN
 {
 	private:
-		std::stack<double> _stack;
-		bool isOperator(char c) const;
+		std::stack<double> _stack;      // holds operands while evaluating
+		bool isOperator(char c) const;  // true for + - * /
 	public:
 		RPN();
 		RPN(const RPN &other);
 		RPN &operator=(const RPN &other);
 		~RPN();
 
-		void calculate(const std::string &expression);
+		void calculate(const std::string &expression); // evaluate an RPN expression
 };
 
 #endif

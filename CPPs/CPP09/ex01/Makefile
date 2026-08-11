@@ -1,5 +1,5 @@
 # Nombre del ejecutable
-NAME := rpn
+NAME := RPN
 
 # Compilador y flags
 CXX := c++

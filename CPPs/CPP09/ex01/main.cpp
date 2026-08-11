@@ -15,11 +15,13 @@
 
 int main(int argc, char **argv)
 {
+	// The program expects exactly one argument: the RPN expression string.
 	if (argc != 2)
 	{
 		std::cerr << "Error" << std::endl;
 		return (1);
 	}
+	// Evaluate the expression; calculate() prints the result or an error.
 	RPN rpn;
 	rpn.calculate(argv[1]);
 	return (0);

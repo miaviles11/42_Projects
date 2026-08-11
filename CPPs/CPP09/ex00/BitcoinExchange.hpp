@@ -20,8 +20,8 @@
 class BitcoinExchange
 {
 	private:
-		std::map<std::string, float> _data;
-		bool isValidDate(const std::string &date) const;
+		std::map<std::string, float> _data;              // date -> exchange rate
+		bool isValidDate(const std::string &date) const; // "YYYY-MM-DD" check
 	public:
 		BitcoinExchange();
 		BitcoinExchange(const std::string &dbFile);
@@ -29,8 +29,8 @@ class BitcoinExchange
 		BitcoinExchange &operator=(const BitcoinExchange &other);
 		~BitcoinExchange();
 
-		void loadDatabase(const std::string &dbFile);
-		void processInput(const std::string &inputFile) const;
+		void loadDatabase(const std::string &dbFile);        // load the CSV database
+		void processInput(const std::string &inputFile) const; // evaluate the input file
 };
 
 #endif
